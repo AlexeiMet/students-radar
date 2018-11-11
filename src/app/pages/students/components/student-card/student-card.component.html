@@ -7,7 +7,10 @@
                 [srCardImg]="student.urlToAvatar"
             ></div>
 
-            <mat-card-title class="student-name">{{ student.fullName }}</mat-card-title>
+            <mat-card-title
+                class="student-name"
+                title="Name: {{ student.fullName }}"
+            >{{ student.fullName }}</mat-card-title>
 
             <i
                 class="{{ getStatus(student) }}"
@@ -67,8 +70,7 @@
                 </div>
                 <div class="study-form">
                     <i
-                        class="ic-study-form"
-                        [class.paid]="student.studyForm === 'paid'"
+                        class="ic-study-form {{ getStudyFormColor(student) }}"
                         title="Study Form: {{ student.studyForm }}"
                     ></i>
                 </div>

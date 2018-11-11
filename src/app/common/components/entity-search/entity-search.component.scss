@@ -1,0 +1,54 @@
+@import '../../../../theme/core-variables.scss';
+
+.search {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    input {
+        @include light-font-color;
+        @include hover-font-color;
+        @include sanspro-primary-font;
+
+        background: none;
+        border: 0;
+        padding: 0;
+        font-size: $primary-font-size;
+        padding-right: px-to-rem(24px);
+        border-bottom: px-to-rem(1px) solid $gray-stroke-color;
+
+        &:hover,
+        &:focus {
+            border-color: $gray-dark-color-hover;
+        }
+
+        &::-ms-clear {
+            display: none;
+        }
+    }
+
+    .clear-button {
+        @include light-font-color;
+        @include hover-font-color;
+
+        background: none;
+        border: 0;
+        position: absolute;
+        font-size: px-to-rem(10px);
+        padding: px-to-rem(8px) 0 px-to-rem(8px) px-to-rem(8px);
+        margin: 0;
+        right: 0;
+        top: 50%;
+        margin-top: px-to-rem(-16px);
+        width: auto;
+        z-index: 3;
+
+        &.hidden {
+            visibility: hidden;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

@@ -20,6 +20,7 @@
             padding-bottom: px-to-rem(10px);
             margin: 0;
             width: px-to-rem(140px);
+            cursor: pointer;
         }
 
         mat-card-subtitle {
@@ -91,6 +92,10 @@
                 .paid {
                     color: $dark-blue;
                 }
+
+                .free {
+                    color: $mercury;
+                }
             }
         }
 
@@ -101,7 +106,7 @@
             font-size: px-to-rem(15px);
 
             .has-no-privilege {
-                color: $no-privileges-color;
+                color: $mercury;
             }
 
             .has-privilege {

@@ -5,6 +5,7 @@
 
     .students {
         display: flex;
+        flex-wrap: wrap;
 
         .student {
             margin: px-to-rem(10px);

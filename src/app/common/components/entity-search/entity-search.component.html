@@ -1,0 +1,14 @@
+<div class="search">
+    <input
+        #input
+        type="text"
+        [maxlength]="50"
+        placeholder="Search"
+        class="form-control"
+        [(ngModel)]="value"
+    >
+    <i
+        class="clear-button ic-close"
+        (click)="onClear()"
+    ></i>
+</div>

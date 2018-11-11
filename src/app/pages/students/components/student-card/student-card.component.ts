@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import * as moment from 'moment';
 
-import { IStudent, StudentStatus, StudentStatusClasses, Gender } from '../../../../dto';
+import { IStudent, StudentStatus, StudentStatusClasses, Gender, StudyForm } from '../../../../dto';
 
 @Component({
     selector: 'sr-student-card',
@@ -73,5 +73,9 @@ export class StudentCardComponent {
 
     public getGroupName(student: IStudent): string {
         return student.group.name;
+    }
+
+    public getStudyFormColor(student: IStudent): string {
+        return student.studyForm === StudyForm.Free ? 'free' : 'paid';
     }
 }

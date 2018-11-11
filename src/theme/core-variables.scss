@@ -19,6 +19,7 @@ $no-privileges-color: #a4aaba;
 $privileges-color: #14707e;
 $no-privilege-color: #666;
 $dark-blue: #14707e;
+$gray-stroke-color: #e2e2e2;
 
 $base-font-size: 16px;
 
@@ -31,6 +32,14 @@ $base-font-size: 16px;
 $normal-header-height: px-to-rem(60px);
 $normal-header-icon-width: px-to-rem(50px);
 $default-card-width: px-to-rem(255px);
+
+$primary-font-size: px-to-rem(14px);
+
+$min-page-width: 1200px;
+
+// fonts
+$oswald-font-name: 'Oswald';
+$source-sans-pro-font-name: 'SourceSansPro';
 
 @mixin full-page-image($image) {
     position: fixed;
@@ -66,4 +75,22 @@ $default-card-width: px-to-rem(255px);
     overflow: hidden;
 }
 
-$oswald-font-name: 'Oswald';
+@mixin light-font-color() {
+    color: $gray-color;
+}
+
+@mixin hover-font-color() {
+    &:hover,
+    &:focus {
+        color: $gray-dark-color-hover;
+        background: transparent;
+        cursor: pointer;
+        outline: none;
+    }
+}
+
+@mixin sanspro-primary-font {
+    font-family: $source-sans-pro-font-name;
+    font-size: px-to-rem(14px);
+    letter-spacing: px-to-rem(.35px);
+}

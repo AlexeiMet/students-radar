@@ -28,13 +28,17 @@ $students-radar-ui-theme: mat-light-theme($students-radar-ui-primary, $students-
 
 @import './core-variables.scss';
 @import './sr-styles.scss';
+@import './fonts.scss';
 
 html, body { height: 100%; }
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    // font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: $oswald-font-name;
     color: $gray-dark-color;
     background-color: $gray-light-color;
+    font-size: $base-font-size;
+    min-width: $min-page-width;
 }
 
 ol, ul {
@@ -55,26 +59,25 @@ a {
     }
 }
 
+input {
+    border: none;
+}
+
 .good {
     color: $green-color;
 }
-
 .normal {
     color: $yellow-color;
 }
-
 .bad {
     color: $red-color;
 }
-
 .good-level {
     color: $green-dark-color;
 }
-
 .normal-level {
     color: $yellow-dark-color;
 }
-
 .bad-level {
     color: $red-dark-color;
 }
