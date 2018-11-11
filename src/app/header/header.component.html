@@ -6,7 +6,7 @@
         <a
             *ngFor="let dashBoard of navDashboards"
             class="bashboard"
-            [routerLink]="[dashBoard.route]"
+            [routerLink]="[dashBoard.route.path]"
             [routerLinkActive]="['active']"
             (click)="onDashboardClick(dashBoard.entityType)"
         >

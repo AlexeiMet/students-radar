@@ -1,4 +1,9 @@
-<sr-header></sr-header>
-<div class='page-wrapper'>
-    <router-outlet></router-outlet>
-</div>
+<ng-container *ngIf='jwtChecked; else jwtWaiting'>
+    <sr-header></sr-header>
+    <div class='page-wrapper'>
+        <router-outlet></router-outlet>
+    </div>
+</ng-container>
+<ng-template #jwtWaiting>
+    Wait for jwt check...
+</ng-template>

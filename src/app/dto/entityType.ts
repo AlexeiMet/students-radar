@@ -4,4 +4,5 @@ export enum EntityType {
     Subjects,
     Groups,
     Admin,
+    Login,
 }

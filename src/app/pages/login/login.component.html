@@ -1,13 +1,20 @@
 <div class='login-window'>
     <h2 class='title'>Log In</h2>
     <h3 class='status' *ngIf='statusText'>{{ statusText }}</h3>
-    <form (ngSubmit)='onSubmit()' [formGroup]='loginForm'>
-        <mat-form-field color='accent'>
-            <input [formControl]='login' formControlName='login' matInput type='text' placeholder='Login'>
-        </mat-form-field>
-        <mat-form-field color='accent'>
-            <input [formControl]='password' formControlName='password' matInput type='password' placeholder='Password'>
-        </mat-form-field>
-        <button mat-raised-button matButton class='login-btn'>{{ loginBtnText }}</button>
+    <form [formGroup]='loginForm' (ngSubmit)='onSubmit()'>
+        <ng-container *ngIf='!waitingForLoginResponse; else waitinForLoginResponse'>
+            <mat-form-field>
+                <input formControlName='login' matInput type='text' placeholder='Login'>
+                <mat-error>Login required</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input formControlName='password' matInput type='password' placeholder='Password'>
+                <mat-error>Password required</mat-error>
+            </mat-form-field>
+            <button mat-raised-button matButton class='login-btn'>{{ loginBtnText }}</button>
+        </ng-container>
+        <ng-template #waitinForLoginResponse>
+            Awaiting for login response
+        </ng-template>
     </form>
 </div>

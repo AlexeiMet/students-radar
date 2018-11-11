@@ -1,8 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormGroupDirective, FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user';
+import { LoginResponse } from '../../dto/login-response.model';
+import { appRoutes } from '../../../config/app-routes';
+import { localStorageConfig } from '../../../config/local-storage';
 import {
     NOT_LOGGED_IN_STATUS_TEXT,
     LOGGED_IN_STATUS_TEXT,
@@ -15,37 +20,44 @@ import {
     templateUrl: 'login.component.html',
     styleUrls: ['login.component.scss'],
 })
-export class LoginPageComponent implements OnInit {
-    login = new FormControl('');
+export class LoginPageComponent implements OnInit, OnDestroy {
+    public user: User;
 
-    password = new FormControl('');
+    public loginError: any;
 
-    user: User;
+    public statusText = NOT_LOGGED_IN_STATUS_TEXT;
 
-    statusText = NOT_LOGGED_IN_STATUS_TEXT;
+    public loginBtnText = NOT_LOGGED_IN_LOGIN_BTN_TEXT;
 
-    loginBtnText = NOT_LOGGED_IN_LOGIN_BTN_TEXT;
+    public loginForm: FormGroup;
 
-    loginForm: FormGroup;
+    public waitingForLoginResponse = false;
 
-    @ViewChild('logForm')
-    private loginFormElement;
+    @ViewChild(FormGroupDirective)
+    private loginFormDirective: FormGroupDirective;
 
-    constructor(private authService: AuthService) {}
+    private subscriptions = new Subscription();
 
-    ngOnInit() {
-        this.authService.user.subscribe(user => {
-            this.user = user;
-            this.setStatusText();
-            this.setLoginBtnText();
-        });
+    constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {}
+
+    public ngOnInit() {
+        this.selectUser();
+        this.selectLoginError();
         this.initLoginForm();
     }
 
-    onSubmit() {
-        console.log(this.loginForm);
+    public ngOnDestroy() {
+        this.subscriptions.unsubscribe();
+    }
+
+    public onSubmit() {
         if (this.loginForm.valid) {
-            this.authService.login(this.login.value, this.password.value);
+            this.subscriptions.add(
+                this.authService
+                    .login(this.loginForm.value.login, this.loginForm.value.password)
+                    .subscribe(user => this.onLoginSuccess(user), error => this.onLoginError(error)),
+            );
+            this.onLoginAwait();
         }
     }
 
@@ -62,8 +74,48 @@ export class LoginPageComponent implements OnInit {
 
     private initLoginForm() {
         this.loginForm = new FormGroup({
-            login: new FormControl(this.login, Validators.required),
-            password: new FormControl(this.password, Validators.required),
+            login: new FormControl('', Validators.required),
+            password: new FormControl('', Validators.required),
         });
+    }
+
+    private selectUser() {
+        this.subscriptions.add(
+            this.authService.user.subscribe(user => {
+                this.user = user;
+                this.setStatusText();
+                this.setLoginBtnText();
+            }),
+        );
+    }
+
+    private selectLoginError() {
+        this.subscriptions.add(
+            this.authService.loginError.subscribe(error => {
+                this.loginError = error;
+            }),
+        );
+    }
+
+    private onLoginAwait() {
+        this.waitingForLoginResponse = true;
+        this.loginFormDirective.resetForm();
+    }
+
+    private onLoginSuccess(response: LoginResponse) {
+        this.authService.user.next(response.user);
+        localStorage[localStorageConfig.jwt] = response.jwt;
+        this.waitingForLoginResponse = false;
+        this.redirectAfterLogin();
+    }
+
+    private onLoginError(error) {
+        this.authService.loginError.next(error);
+        this.waitingForLoginResponse = false;
+        alert(`Error while login: ${error}`);
+    }
+
+    private redirectAfterLogin() {
+        this.router.navigate(['/students']);
     }
 }
